@@ -2,3 +2,4 @@
    - navigation
    - search
    - movie
+   - footer

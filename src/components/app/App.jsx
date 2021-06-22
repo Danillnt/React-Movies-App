@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import Movie from '../movie/Movie';
+import Search from '../search/Search';
+import Navigation from '../navigation/Navigation';
+import Footer from '../footer/Footer';
 
 import './app.css';
+import 'antd/dist/antd.css';
+// import '../../../node_modules/antd/dist/antd';
 
 const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=bdd22ead79976a2888bf95992b5b1940&page=1";
 // const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=";
@@ -19,13 +24,18 @@ function App() {
      });
   }, [])
 
-  console.log(movies)
+//   console.log(movies)
 //   console.log(setMovies)
-  return <div className="container">
-    {movies.length > 0 && movies.map((movie) => 
-    <Movie key={movie.id} {...movie} />
-    )}
-    </div>;
+  return (
+    <div className="container">
+        <Navigation />
+        <Search />
+        {movies.length > 0 && movies.map((movie) => 
+        <Movie key={movie.id} {...movie} />
+        )}
+        <Footer />
+    </div>
+  )
 }
 
 export default App;

@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 
+import { Rate } from 'antd';
+
 import './movie.css';
 
-export default class Movie extends Component {
+// const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
+export default class Movie extends Component {
+    // state = {
+    //     value: 3,
+    //   };
+
+    //   handleChange = value => {
+    //     this.setState({ value });
+    //   };  
 
     //Сокращаем текст
     truncateText = (text) => {
         let counter = text.split(" ")
         if (counter.length > 60) { 
-            let del = counter.length - 40
+            let del = counter.length - 60
             let res = counter.splice(0, del).join(" ")+"..."
             return res
         } else {
@@ -19,9 +29,16 @@ export default class Movie extends Component {
    
 
     render() {
+        
         const IMG_API = "https://image.tmdb.org/t/p/w1280";
- 
+        // const { value } = this.state;
+
         let {original_title, poster_path, release_date, vote_average, overview} = this.props;
+
+        // console.log(this.truncateText(overview))
+        
+
+        // truncateText(overview)
         
         return (
             <div className="movie-item">
@@ -41,11 +58,15 @@ export default class Movie extends Component {
                         <div className="infoCard__genre_team-el">Action</div>
                         <div className="infoCard__genre_team-el">Drama</div>
                     </div>
-                    <div infoCard__text>
-                         <span className="infoCard__text_infoMovie">{this.truncateText(overview)}</span>
+                    <div className="infoCard__text">
+                         {/* <span className="infoCard__text_infoMovie">{this.truncateText(overview)}</span> */}
                     </div>
                     <div className="infoCard__star">
-
+                        <span>
+                            {/* <Rate tooltips={desc} onChange={this.handleChange} value={value} />
+                            {value ? <span className="ant-rate-text">{desc[value - 1]}</span> : ''} */}
+                            <Rate />
+                        </span>
                     </div>                             
                 </div>    
             </div>        

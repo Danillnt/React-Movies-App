@@ -1,0 +1,8 @@
+.infoCard__footer {
+    width: 938px;
+    height: 40px;
+}
+
+.infoCard__footer .ant-pagination {
+    text-align: center;
+}

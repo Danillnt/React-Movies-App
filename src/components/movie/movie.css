@@ -24,25 +24,46 @@ body {
   
   .infoCard {
     width: 268px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   } 
   
   .infoCard__header {
       display: flex;
+      justify-content: space-between;
   }
 
+  .infoCard__header_team-title {
+    font-size: 20px;
+    font-weight: 400;
+    flex-basis: 80%;
+    padding-left: 20px;
+  } 
+
   .infoCard__header_team-rate {
-      border: 2px solid yellow;
+      display: block;
+      width: 30px;
+      height: 30px;
+      border: 2px solid #E9D100;
       border-radius: 50%;
+      text-align: center;
+      vertical-align: middle;
+      padding-top: 2px;
+      /* flex-basis: 20%; */
   }
 
   .infoCard__date {
-      color: #827E7E
+      color: #827E7E;
+      padding-left: 20px;
+      margin-top: 5px;
   }
 
   .infoCard__genre {
-      display: flex;
+    margin-top: 7px;
+    display: flex;
     color: #827E7E;
-    
+    padding-left: 20px;
   }
 
   .infoCard__genre_team-el {
@@ -60,10 +81,14 @@ body {
 
   
   .infoCard__text {
+    margin-top: 7px;
     font-size: 12px;
+    padding-left: 20px;
+    height: 129px;
+    width: 228px;
   } 
+
+  .infoCard__star {
+    padding-left: 20px;
+  }
   
-  .infoCard__header_team-title {
-    font-size: 20px;
-    font-weight: 400;
-  } 
