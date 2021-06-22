@@ -1,0 +1,69 @@
+body {
+    /* background-color: #22254b; */
+    /* color: rgb(153, 129, 129)53, 129, 129); */
+    margin: 0;
+  }
+
+/* span {
+    display: block;
+}  */
+  
+  .movie-item {
+    width: 454px;
+    height: 281px;
+    display: flex;
+    font-family: Inter;
+    margin-left: 36px;
+    margin-bottom: 35px;
+  }
+  
+  .imageCard__img {
+    width: 183px;
+    height: 281px;
+  }
+  
+  .infoCard {
+    width: 268px;
+  } 
+  
+  .infoCard__header {
+      display: flex;
+  }
+
+  .infoCard__header_team-rate {
+      border: 2px solid yellow;
+      border-radius: 50%;
+  }
+
+  .infoCard__date {
+      color: #827E7E
+  }
+
+  .infoCard__genre {
+      display: flex;
+    color: #827E7E;
+    
+  }
+
+  .infoCard__genre_team-el {
+      width: 46px;
+      height: 20px;
+      margin-right: 12px;
+      border: 1px solid #D9D9D9;
+      box-sizing: border-box;
+      border-radius: 2px;
+      font-size: 14px; 
+      padding-left: 2px;
+      /* align-items: center;
+      vertical-align: baseline; */
+  }
+
+  
+  .infoCard__text {
+    font-size: 12px;
+  } 
+  
+  .infoCard__header_team-title {
+    font-size: 20px;
+    font-weight: 400;
+  } 
