@@ -21,10 +21,7 @@ export default class Movie extends Component {
         return res
       }
 
-    state: {
-        data: ""
-    }  
-   
+
 
     render() {
 
@@ -33,10 +30,7 @@ export default class Movie extends Component {
         const IMG_API = "https://image.tmdb.org/t/p/w1280";
 
         let {original_title, poster_path, release_date, vote_average, overview} = this.props;
-
-        
-        
-      
+ 
         // console.log(format(new Date(release_date), 'LLLL d, y'))
 
         return (

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
 import Movie from '../movie/Movie';
-import Search from '../search/Search';
+// import Search from '../search/Search';
 import Navigation from '../navigation/Navigation';
 import Footer from '../footer/Footer';
 
 import './app.css';
+import '../search/search.css' //!Временный переделать
 import 'antd/dist/antd.css';
 // import '../../../node_modules/antd/dist/antd';
 
 const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=bdd22ead79976a2888bf95992b5b1940&page=1";
-// const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=";
+ const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=";
 
 function App() {
   const [ movies, setMovies ] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
      fetch(FEATURED_API)
@@ -24,12 +26,38 @@ function App() {
      });
   }, [])
 
-//   console.log(movies)
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+
+    fetch(SEARCH_API+searchTerm)
+    .then(res => res.json())
+    .then(data => {
+     //  console.log(data)
+      setMovies(data.results);
+    });
+   }
+
+   const hendleOnChange = (e) => {
+    setSearchTerm(e.target.value)
+   }
+
+  // console.log(movies)
 //   console.log(setMovies)
+console.log(useState)
   return (
     <div className="container">
         <Navigation />
-        <Search />
+        {/* <Search /> */}
+        <div className="movie-search">
+                <form onSubmit={handleOnSubmit}>
+                    <input className="movie-search__input" 
+                    placeholder="Tupe to search..." 
+                    type="search"
+                    value={searchTerm}
+                    onChange={hendleOnChange}
+                    />
+                </form>
+         </div> 
         {movies.length > 0 && movies.map((movie) => 
         <Movie key={movie.id} {...movie} />
         )}
