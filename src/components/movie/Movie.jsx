@@ -2,44 +2,43 @@ import React, { Component } from 'react';
 
 import { Rate } from 'antd';
 
+import { format } from 'date-fns'
+
 import './movie.css';
 
-// const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
-
 export default class Movie extends Component {
-    // state = {
-    //     value: 3,
-    //   };
-
-    //   handleChange = value => {
-    //     this.setState({ value });
-    //   };  
 
     //Сокращаем текст
     truncateText = (text) => {
-        let counter = text.split(" ")
-        if (counter.length > 60) { 
-            let del = counter.length - 60
-            let res = counter.splice(0, del).join(" ")+"..."
-            return res
-        } else {
-            return text
-        }
+        let arr = text.split(" ")
+
+        let newArr = arr.filter((i, item) => {
+            if (item < 40) {
+                return i
+            }
+        })
+        let res = newArr.join(" ")+"..."
+        return res
       }
+
+    state: {
+        data: ""
+    }  
    
 
     render() {
+
+        
         
         const IMG_API = "https://image.tmdb.org/t/p/w1280";
-        // const { value } = this.state;
 
         let {original_title, poster_path, release_date, vote_average, overview} = this.props;
 
-        // console.log(this.truncateText(overview))
         
+        
+      
+        // console.log(format(new Date(release_date), 'LLLL d, y'))
 
-        // truncateText(overview)
-        
         return (
             <div className="movie-item">
                 <div className="imageCard">
@@ -52,19 +51,17 @@ export default class Movie extends Component {
                         <span className="infoCard__header_team-rate">{vote_average}</span> 
                     </div>         
                     <div className="infoCard__date">
-                         <span >{release_date}</span> 
+                         <span >{format(new Date(), 'LLLL d, y')}</span> 
                     </div>  
                     <div className="infoCard__genre">
                         <div className="infoCard__genre_team-el">Action</div>
                         <div className="infoCard__genre_team-el">Drama</div>
                     </div>
                     <div className="infoCard__text">
-                         {/* <span className="infoCard__text_infoMovie">{this.truncateText(overview)}</span> */}
+                         <span className="infoCard__text_infoMovie">{this.truncateText(overview)}</span>
                     </div>
                     <div className="infoCard__star">
                         <span>
-                            {/* <Rate tooltips={desc} onChange={this.handleChange} value={value} />
-                            {value ? <span className="ant-rate-text">{desc[value - 1]}</span> : ''} */}
                             <Rate />
                         </span>
                     </div>                             
