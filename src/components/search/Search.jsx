@@ -1,40 +1,54 @@
-// import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 
-// // import './search.css';
+import SwapiService from '../../services/swapi-service';
 
-// const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=";
+import './search.css';
 
-// function Search() {
 
-//   const [searchTerm, setSearchTerm] = useState('');
+export default class Search extends Component {
 
-//   const handleOnSubmit = (e) => {
-//     e.preventDefault()
+    swapiService = new SwapiService();
 
-//     fetch(SEARCH_API+searchTerm)
-//     .then(res => res.json())
-//     .then(data => {
-//      //  console.log(data)
-//       setMovies(data.results);
-//     });
-//    }
+    state = {
+        text: " "
+    }
 
-//    const hendleOnChange = (e) => {
-//     setSearchTerm(e.target.value)
-//    }
+    //upDateMovie
 
-//   return (
-//         <div className="movie-search">
-//                 <form onSubmit={handleOnSubmit}>
-//                     <input className="movie-search__input" 
-//                     placeholder="Tupe to search..." 
-//                     type="search"
-//                     value={searchTerm}
-//                     onChange={hendleOnChange}
-//                     />
-//                 </form>
-//          </div> 
-//   )
-// }
+    handleOnSubmit = (e) => {
+        e.preventDefault()
 
-// export default App;
+        this.props.upDateMovie(this.state.text);
+        this.setState({
+            text: ""
+        });
+    }
+
+    //записываем в состояние текст инпута
+    hendleOnChange = (e) => {
+        this.setState({
+           text: e.target.value
+        });
+    }
+
+
+    render() {
+
+        const { text } = this.state
+      
+        return (
+            <div className="movie-search">
+                {/* <div>{text}</div> */}
+                <form onSubmit={this.handleOnSubmit}>
+                    <input className="movie-search__input" 
+                    placeholder="Tupe to search..." 
+                    type="search"
+                    // value={searchTerm}
+                    onChange={this.hendleOnChange}
+                    />
+                </form>
+            </div>       
+        )
+    }
+}
+

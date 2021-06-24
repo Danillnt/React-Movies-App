@@ -1,126 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 
-import Movie from '../movie/Movie';
-// import Search from '../search/Search';
+import SwapiService from '../../services/swapi-service';
+import Movie from '../movie/Movie'
 import Navigation from '../navigation/Navigation';
 import Footer from '../footer/Footer';
+import Search from '../search/Search';
 
-import './app.css';
-import '../search/search.css' //!Временный переделать
+import './app2.css'
 import 'antd/dist/antd.css';
-// import '../../../node_modules/antd/dist/antd';
 
-const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=bdd22ead79976a2888bf95992b5b1940&page=1";
- const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=";
 
-function App() {
-  const [ movies, setMovies ] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+export default class App2 extends Component {
 
-  useEffect(() => {
-     fetch(FEATURED_API)
-     .then(res => res.json())
-     .then(data => {
-      //  console.log(data)
-       setMovies(data.results);
-     });
-  }, [])
+    swapiService = new SwapiService();
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault()
+    constructor() {
+        super();
+        this.upDateMovie();
+    }
 
-    fetch(SEARCH_API+searchTerm)
-    .then(res => res.json())
-    .then(data => {
-     //  console.log(data)
-      setMovies(data.results);
-    });
+    state = {
+        data: [],
+        dataSearch: []
+    }
+
+
+    //записываем полученные данные (популярные)
+   async upDateMovie() {
+         const res = await this.swapiService.getMovisPopular()
+            .then((res) => {
+                this.setState({
+                    data: res
+                })
+            })
+            console.log(this)
+    }
+
+    //записываем полученные данные в состояние (поисковые) 
+     upDateMovieSearch = (text) => {
+        const res2 = this.swapiService.getMovisSearch(text)
+           .then((res) => {
+               this.setState({
+                   data: res
+               })
+            console.log(res)
+           })
    }
 
-   const hendleOnChange = (e) => {
-    setSearchTerm(e.target.value)
-   }
+    render() {
 
-  // console.log(movies)
-//   console.log(setMovies)
-console.log(useState)
-  return (
-    <div className="container">
-        <Navigation />
-        {/* <Search /> */}
-        <div className="movie-search">
-                <form onSubmit={handleOnSubmit}>
-                    <input className="movie-search__input" 
-                    placeholder="Tupe to search..." 
-                    type="search"
-                    value={searchTerm}
-                    onChange={hendleOnChange}
-                    />
-                </form>
-         </div> 
-        {movies.length > 0 && movies.map((movie) => 
-        <Movie key={movie.id} {...movie} />
-        )}
-        <Footer />
-    </div>
-  )
+        const { data } = this.state
+
+        return (
+            <div className="container">
+                <Navigation />
+                <Search upDateMovie={this.upDateMovieSearch}/>
+                {data.length > 0 && data.map((i) => 
+                <Movie key={i.id} {...i} />
+                )}
+                <Footer />
+            </div>        
+        )
+    }
 }
-
-export default App;
-//-------------------------------------------------------------------
-
-// import React, { Component } from 'react';
-
-// // import Movie from '../movie/Movie';
-
-// import './app.css';
-
-// export default class App extends Component {   
-
-//     // const [ movies, setMovies ] = useState([]);
-
-// state: {
-//     movies: '',
-//     setMovies: ''
-// }
-
-//     // useEffect(() => {
-//     //     fetch(FEATURED_API)
-//     //     .then(res => res.json())
-//     //     .then(data => {
-//     //      //  console.log(data)
-//     //       setMovies(data.results);
-//     //     });
-//     //  }, [])
-
-     
-
-//      async getMovies() {
-//         // const FEATURED_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=bdd22ead79976a2888bf95992b5b1940&page=1";
-//         // fetch(FEATURED_API)
-//         // .then(res => res.json())
-//         // .then(data => this.setState({movies: data}) )
-//         const res = await fetch('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=bdd22ead79976a2888bf95992b5b1940&page=1')
-//          let a = await res.json();
-//         //  console.log(a)
-//          this.setState({
-//              movies: a
-//          })
-//      }
-
-//     render() {
-        
-//        this.getMovies()
-//         console.log(this.state)
-        
-//         // const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=";
-
-//         return (
-//             <div className="container">
-//                 {/* {movies.length > 0 && movies.map((movie) => 
-//                 <Movie key={movie.id} {...movie} />
-//                 )} */}
-//             </div>
-//         )
-//     }
-// }

@@ -10,7 +10,8 @@ export default class Movie extends Component {
 
     //Сокращаем текст
     truncateText = (text) => {
-        let arr = text.split(" ")
+        if (text !== undefined) {
+            let arr = text.split(" ")
 
         let newArr = arr.filter((i, item) => {
             if (item < 40) {
@@ -19,19 +20,21 @@ export default class Movie extends Component {
         })
         let res = newArr.join(" ")+"..."
         return res
+        }
       }
 
 
 
     render() {
-
-        
-        
+  
         const IMG_API = "https://image.tmdb.org/t/p/w1280";
 
         let {original_title, poster_path, release_date, vote_average, overview} = this.props;
+        // const overviewNew = this.truncateText(overview);
+        // console.log(overview)
  
         // console.log(format(new Date(release_date), 'LLLL d, y'))
+        
 
         return (
             <div className="movie-item">
