@@ -33,8 +33,6 @@ export default class Search extends Component {
 
 
     render() {
-
-        const { text } = this.state
       
         return (
             <div className="movie-search">

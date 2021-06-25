@@ -11,16 +11,19 @@ export default class Movie extends Component {
     //Сокращаем текст
     truncateText = (text) => {
         if (text !== undefined) {
-            let arr = text.split(" ")
+        let arr = text.split(" ");
+        let newArr = [];
 
-        let newArr = arr.filter((i, item) => {
+        arr.forEach((i, item) => {
             if (item < 40) {
-                return i
+                newArr.push(i)
             }
         })
+
         let res = newArr.join(" ")+"..."
         return res
         }
+
       }
 
 
@@ -29,7 +32,8 @@ export default class Movie extends Component {
   
         const IMG_API = "https://image.tmdb.org/t/p/w1280";
 
-        let {original_title, poster_path, release_date, vote_average, overview} = this.props;
+        //release_date //!Разобраться с датой и вставить ниже
+        let {original_title, poster_path, vote_average, overview} = this.props;
         // const overviewNew = this.truncateText(overview);
         // console.log(overview)
  

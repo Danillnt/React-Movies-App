@@ -1,7 +1,6 @@
 
 const POPULAR_API = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=bdd22ead79976a2888bf95992b5b1940&page=1";
 const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=";
-const IMG_API = "https://image.tmdb.org/t/p/w1280";
 
 export default class SwapiService {
 
