@@ -1,0 +1,13 @@
+ul {
+   display: block;
+}
+
+li {
+   display: block;
+   list-style: none;
+}
+
+.taskList {
+   display: flex;
+   flex-wrap: wrap;
+}

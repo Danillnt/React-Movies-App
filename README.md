@@ -1,5 +1,6 @@
 - app
-   - navigation
-   - search
-   - movie
-   - footer
+  - navigation
+  - search
+  - taskList
+    - list
+    - footerPagination

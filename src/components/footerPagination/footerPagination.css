@@ -6,3 +6,7 @@
 .infoCard__footer .ant-pagination {
     text-align: center;
 }
+
+.infoCard__footer_team-hidden {
+    display: none;
+}

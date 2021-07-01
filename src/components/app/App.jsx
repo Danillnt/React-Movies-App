@@ -1,101 +1,115 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import SwapiService from '../../services/swapi-service';
-import Movie from '../movie/Movie'
-import Navigation from '../navigation/Navigation';
-import Footer from '../footer/Footer';
-import Search from '../search/Search';
-import Spiner from '../spiner/Spiner';
-import ErrorIndicator from '../error-indicator/error-indicator'
+import SwapiService from "../../services/swapi-service";
+import Navigation from "../navigation/Navigation";
+import Search from "../search/Search";
+import ErrorIndicator from "../error-indicator/error-indicator";
+import TaskList from "../taskList/TaskList";
 
-import './app.css'
-import 'antd/dist/antd.css';
-
+import "./app.css";
+import "antd/dist/antd.css";
+import { debounce } from "lodash";
 
 export default class App extends Component {
+  swapiService = new SwapiService();
 
-    swapiService = new SwapiService();
+  state = {
+    data: [],
+    loading: false, //спинер
+    error: false, // окно с сообщением об ошибки
+    current: 1, //страница пагинации
+    text: "", //текст инпута
+  };
 
-    constructor() {
-        super();
-        setTimeout(this.upDateMovie, 1000); //Задержка спинера
-    };
+  //Меняем состояние ошибки(если данные с сервера не получены)
+  onError = (err) => {
+    this.setState({
+      // loading: true,
+      error: true,
+    });
+  };
 
-    state = {
-        data: [],
-        loading: true, //спинер
-        error: false
-    };
+  //записываем полученные данные в состояние (поисковые)
+  upDateMovieSearch = (text, page = 1) => {
+    this.setState({
+      loading: true, //показываем загрузку
+    });
 
-    //Меняем состояние ошибки(если данные с сервера не получены)
-    onError = (err) => {
+    this.swapiService
+      .getMovisSearch(text, page)
+      .then((res) => {
         this.setState({
-            // loading: true,
-            error: true
-        })
-    };
+          data: res,
+          loading: false,
+        });
+      })
 
-    //записываем полученные данные (популярные)
-   upDateMovie = () => {
-         this.swapiService.getMovisPopular()
-            .then((res) => {
-                this.setState({
-                    data: res,
-                    loading: false
-                })
-            })
-            .catch(this.onError)
-    };
+      .catch(this.onError);
+  };
 
-    //записываем полученные данные в состояние (поисковые) 
-     upDateMovieSearch = (text) => {
-        this.setState({
-            loading: true
-           })
+  //получаем номер страницы и вызываем получение данных
+  onChange = (page) => {
+    this.setState({
+      current: page,
+    });
 
-        this.swapiService.getMovisSearch(text)
-           .then((res) => {
-               this.setState({
-                   data: res,
-                   loading: false
-               })
-           })
-           .catch(this.onError()) 
-   };
+    this.upDateMovieSearch(this.state.text, page);
+  };
 
-    render() {
+  //записываем в состояние текст инпута и вызываем функцию с апп
+  hendleOnChange = debounce((e) => {
+    this.setState({
+      text: e.target.value,
+    });
 
-        const { data, loading, error} = this.state
-        // console.log(error)
+    this.upDateMovieSearch(this.state.text);
+  }, 1000);
 
-        //Проверка состояния загрузки
-        if (loading && !error) {
-            return (
-                <div className="spiner">
-                    <Spiner />
-                </div>
-            )
-        }
+  render() {
+    const { data, error, current, text } = this.state;
 
-        //Проверка состояния ошибки
-        if (error) {
-            return (
-                <div>
-                    <ErrorIndicator />
-                </div>
-            )
-        }
-
-        return (
-            <div className="container">
-                <Navigation />
-                <Search upDateMovie={this.upDateMovieSearch}/>
-                {data.length > 0 && data.map((i) => 
-                <Movie key={i.id} {...i} />
-                )}
-                <Footer />
-            </div>        
-        )
+    //сообщение "видео не найдено"
+    if (data.length === 0 && text.length > 0) {
+      return (
+        <div className="container">
+          <Navigation />
+          <Search
+            upDateMovie={this.upDateMovieSearch}
+            hendleOnChange={this.hendleOnChange}
+          />
+          <h1>Видео не найдено!</h1>
+        </div>
+      );
     }
-}
 
+    //Проверка состояния ошибки И вызов окна с сообщением
+    if (error) {
+      return (
+        <div>
+          <Navigation />
+          <Search
+            upDateMovie={this.upDateMovieSearch}
+            hendleOnChange={this.hendleOnChange}
+          />
+          <ErrorIndicator />
+        </div>
+      );
+    }
+
+    return (
+      <div className="container">
+        <Navigation />
+        <Search
+          upDateMovie={this.upDateMovieSearch}
+          hendleOnChange={this.hendleOnChange}
+        />
+        <TaskList
+          data={data}
+          loading={this.state.loading}
+          onChange={this.onChange}
+          current={current}
+        />
+      </div>
+    );
+  }
+}
