@@ -1,13 +1,8 @@
 .error-indicator {
-    /* display: flex;
-    flex-direction: row; */
     text-align: center;
     padding-top: 10%;
 }
 
-/* .error-indicator span {
-    display: block;
-} */
 
 .error-indicator__text_1 {
     color: red;

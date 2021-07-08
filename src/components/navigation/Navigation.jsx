@@ -1,23 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import './navigation.css';
+import "./navigation.css";
 
-import { Button } from 'antd';
-// import 'antd/dist/antd.css';
-// import '../../../node_modules/antd/dist/antd.css';
+import { Button } from "antd";
 
 export default class Navigation extends Component {
+  render() {
+    const { showItemSearch, showItemRated } = this.props;
 
-   
-
-    render() {
-
-        
-        return (
-            <div className="movie-navigation">
-                <Button className="movie-navigation__btnSearch btn">Search</Button>
-                <Button className="movie-navigation__btnRated btn">Rated</Button>
-            </div>        
-        )
-    }
+    return (
+      <div className="movie-navigation">
+        <Button
+          className="movie-navigation__btnSearch btn"
+          onClick={showItemSearch}
+        >
+          Search
+        </Button>
+        <Button
+          className="movie-navigation__btnRated btn"
+          onClick={showItemRated}
+        >
+          Rated
+        </Button>
+      </div>
+    );
+  }
 }

@@ -1,28 +1,18 @@
 .movie-navigation {
-    /* width: 938px;
-    height: 40px; */
     display: flex;
     justify-content: center;
     text-align: center;
 }
 
-/* .btn {
-    height: 22px;
-    width: 64.63636779785156px;
-    border-radius: nullpx;
-    font-family: Inter;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 22px;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.65);
-    /* background-color: rgb(129, 105, 105); */
-    /* border-bottom: 1px solid black; */
-/* /* }   */
+@media only screen and (max-width: 410px) {
+    .movie-navigation {
+      width: 399px;
+    }
+}   
+
 
 .movie-navigation .btn {
-    border: 0px solid red;
+    border: 0px solid white;
     box-shadow: 0 1px 0 rgb(0 0 0 / 11%);
     color: rgba(0, 0, 0, 0.65);
 }

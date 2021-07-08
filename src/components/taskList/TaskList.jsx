@@ -13,7 +13,7 @@ export default class TaskList extends Component {
   };
 
   render() {
-    let { data, loading, error, onChange, current } = this.props;
+    let { data, loading, error, onChange, current, status } = this.props;
     let elements = [];
 
     //Проверка состояния загрузки
@@ -31,7 +31,7 @@ export default class TaskList extends Component {
 
       return (
         <li key={id}>
-          <Task {...itemProps} />
+          <Task {...itemProps} status={status} />
         </li>
       );
     });
@@ -44,11 +44,7 @@ export default class TaskList extends Component {
     return (
       <div className="main">
         <ul className="taskList">{elements}</ul>;
-        <FooterPagination
-          onChange={onChange}
-          current={current}
-          // hiddenPagination={hiddenPagination}
-        />
+        <FooterPagination onChange={onChange} current={current} />
       </div>
     );
   }

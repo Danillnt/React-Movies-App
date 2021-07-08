@@ -6,6 +6,8 @@ import Search from "../search/Search";
 import ErrorIndicator from "../error-indicator/error-indicator";
 import TaskList from "../taskList/TaskList";
 
+import { Context } from "../context/context";
+
 import "./app.css";
 import "antd/dist/antd.css";
 import { debounce } from "lodash";
@@ -19,12 +21,18 @@ export default class App extends Component {
     error: false, // окно с сообщением об ошибки
     current: 1, //страница пагинации
     text: "", //текст инпута
+    status: "search", //статус какая кнопка нажата в хедаре
+    genres: "",
   };
 
+  //метод жизненного цикла используем для получения API жанров
+  componentDidMount() {
+    this.getDateGenres();
+  }
+
   //Меняем состояние ошибки(если данные с сервера не получены)
-  onError = (err) => {
+  onError = () => {
     this.setState({
-      // loading: true,
       error: true,
     });
   };
@@ -47,6 +55,15 @@ export default class App extends Component {
       .catch(this.onError);
   };
 
+  //получаем список жанров и закидываем его в состояние
+  getDateGenres = () => {
+    this.swapiService.getGenres().then((res) => {
+      this.setState({
+        genres: res,
+      });
+    });
+  };
+
   //получаем номер страницы и вызываем получение данных
   onChange = (page) => {
     this.setState({
@@ -65,8 +82,22 @@ export default class App extends Component {
     this.upDateMovieSearch(this.state.text);
   }, 1000);
 
+  //кнопка хедар поисковые
+  showItemSearch = () => {
+    this.setState({
+      status: "search",
+    });
+  };
+
+  //кнопка хедар оцененные
+  showItemRated = () => {
+    this.setState({
+      status: "rated",
+    });
+  };
+
   render() {
-    const { data, error, current, text } = this.state;
+    const { data, error, current, text, genres } = this.state;
 
     //сообщение "видео не найдено"
     if (data.length === 0 && text.length > 0) {
@@ -97,19 +128,25 @@ export default class App extends Component {
     }
 
     return (
-      <div className="container">
-        <Navigation />
-        <Search
-          upDateMovie={this.upDateMovieSearch}
-          hendleOnChange={this.hendleOnChange}
-        />
-        <TaskList
-          data={data}
-          loading={this.state.loading}
-          onChange={this.onChange}
-          current={current}
-        />
-      </div>
+      <Context.Provider value={genres}>
+        <div className="container">
+          <Navigation
+            showItemSearch={this.showItemSearch}
+            showItemRated={this.showItemRated}
+          />
+          <Search
+            upDateMovie={this.upDateMovieSearch}
+            hendleOnChange={this.hendleOnChange}
+          />
+          <TaskList
+            data={data}
+            loading={this.state.loading}
+            onChange={this.onChange}
+            current={current}
+            status={this.state.status}
+          />
+        </div>
+      </Context.Provider>
     );
   }
 }
