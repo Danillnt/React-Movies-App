@@ -97,7 +97,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { data, error, current, text, genres } = this.state;
+    const { data, error, current, text, genres, status, loading } = this.state;
 
     //сообщение "видео не найдено"
     if (data.length === 0 && text.length > 0) {
@@ -140,10 +140,10 @@ export default class App extends Component {
           />
           <TaskList
             data={data}
-            loading={this.state.loading}
+            loading={loading}
             onChange={this.onChange}
             current={current}
-            status={this.state.status}
+            status={status}
           />
         </div>
       </Context.Provider>
