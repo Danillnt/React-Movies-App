@@ -22,10 +22,20 @@ body {
  }
 
  @media only screen and (max-width: 410px) {
+
+  .taskList {
+    width: 94%;
+    /* background-color: red; */
+  }
+
+  .taskList li {
+    /* width: 98%; */
+  } 
+
   .movie-item {
     display: block;
-    height: 245px;
-    width: 370px;
+    height: 89%;
+    width: 100%;
     margin-right: 0;
   }
 }
@@ -72,8 +82,9 @@ body {
 
  @media only screen and (max-width: 410px) {
   .infoCard {
-    width: 387px;
-    height: 245px;
+    /* width: 242px; */
+    /* height: 245px; */
+    width: 100%;
     justify-content: flex-start
   }
 }
@@ -86,7 +97,8 @@ body {
 
  @media only screen and (max-width: 410px) {
   .infoCard__header {
-    width: 370px;
+    width: 100%;
+    /* background-color: red; */
    }
 }
 
@@ -101,6 +113,7 @@ body {
   .infoCard__header_team-title {
     margin-left: 55px;
     flex-basis: 180% !important;
+    font-size: 20px;
   } 
 }
 
@@ -181,7 +194,8 @@ body {
   .infoCard__date {
     margin-top: 0px;
     padding-left: 75px !important;
-    width: 370px;
+    width: 100%;
+    font-size: 12px;
   }
 }
 
@@ -197,7 +211,7 @@ body {
   .infoCard__genre {
     margin-top: 0px;
     padding-left: 75px !important;
-    width: 370px;
+    width: 100%;
     }
   } 
 
@@ -214,6 +228,13 @@ body {
      padding-bottom: 20px;
  }
 
+ @media only screen and (max-width: 410px) {
+  .infoCard__genre_team-el {
+    font-size: 12px; 
+    padding-bottom: 0px;
+    }
+  } 
+
  
  .infoCard__text {
    margin-top: 7px;
@@ -223,11 +244,10 @@ body {
 
  @media only screen and (max-width: 410px) {
   .infoCard__text {
-    margin-top: 0px;
     font-size: 12px;
     padding-left: 10px !important;
-    width: 350px;
-    margin-top: 10px;
+    width: 100%;
+    margin-top: 18px;
   } 
 }  
 
@@ -237,9 +257,12 @@ body {
  
  @media only screen and (max-width: 410px) {
   .infoCard__star {
-    width: 370px;
+    width: 100%;
+    height: 50px;
     display: flex;
     justify-content: flex-end;
+    /* background-color: red; */
+
   }
 }  
 

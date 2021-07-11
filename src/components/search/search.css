@@ -13,7 +13,13 @@
 }
 
 @media only screen and (max-width: 400px) {
-    .movie-search__input {
-        width: 370px;
+
+    .movie-search {
+        width: 100%;
+        /* background-color: red; */
+    }
+
+    .container .movie-search__input {
+        width: 95%;
     }
 }

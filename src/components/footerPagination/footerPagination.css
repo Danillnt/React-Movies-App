@@ -13,7 +13,7 @@
 
 @media only screen and (max-width: 410px) {
     .infoCard__footer {
-        width: 398px;
+        width: 98%;
         height: 40px;
     }
 }

@@ -2,8 +2,8 @@
 .container {
     display: flex;
     flex-direction: column;
-    max-width: 1010px;
-    max-height: 1147px;
+    /* max-width: 1010px;
+    max-height: 1147px; */
     margin-left: auto;
     margin-right: auto;
   }
@@ -15,7 +15,15 @@
 }
 
 @media only screen and (max-width: 410px) { 
+  .root {
+    /* width: 372px; */
+    /* width: ; */
+  }
   .container {
-    width: 400px;
+    /* width: 98%; */
+    /* width: 372px; */
+  }
+  .main {
+    width: 99%;
   }
 }
