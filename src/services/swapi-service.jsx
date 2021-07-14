@@ -1,8 +1,9 @@
 export default class SwapiService {
-  // общий запрос к API
-  async getResourse(url) {
-    const res = await fetch(url);
-    // ошибка ответа сервера
+  async getToken() {
+    const res = await fetch(
+      "https://api.themoviedb.org/3/authentication/guest_session/new?api_key=bdd22ead79976a2888bf95992b5b1940"
+    );
+
     if (!res.ok) {
       throw new Error("Ошибка с сервера");
     }
@@ -10,13 +11,47 @@ export default class SwapiService {
     return body;
   }
 
-  // Запрос на поиск по инпуту
+  async postRate(rate, id, token) {
+    if (rate > 0) {
+      let givenGrade = {
+        value: rate,
+      };
+
+      let url = `https://api.themoviedb.org/3/movie/${id}/rating?api_key=bdd22ead79976a2888bf95992b5b1940&guest_session_id=${token}`;
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(givenGrade),
+      });
+      if (!res.ok) {
+        throw new Error("Ошибка с сервера");
+      }
+      // let result = await res.json();
+      // console.log(result);
+    }
+  }
+
+  async getResourse(url) {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error("Ошибка с сервера");
+    }
+    const body = await res.json();
+    return body;
+  }
+
   async getMovisSearch(text, page) {
+    let url = `https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=${text}&page=${page}`;
+
     if (text.length > 0) {
-      const res = await this.getResourse(
-        `https://api.themoviedb.org/3/search/movie?&api_key=bdd22ead79976a2888bf95992b5b1940&query=${text}&page=${page}`
-      );
-      return res.results;
+      const res = await this.getResourse(url);
+      return {
+        data: res.results,
+        total_pages: res.total_pages,
+      };
     }
     return [];
   }
@@ -27,7 +62,6 @@ export default class SwapiService {
     );
     const body = await res.json();
 
-    // ошибка ответа сервера
     if (!res.ok) {
       throw new Error("Ошибка с сервера");
     }

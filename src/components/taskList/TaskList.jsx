@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 import Task from "../task/Task";
-import Spiner from "../spiner/Spiner";
+import { Spin } from "antd";
+
 import FooterPagination from "../footerPagination/FooterPagination";
 
 import "./taskList.css";
@@ -13,30 +14,46 @@ export default class TaskList extends Component {
   };
 
   render() {
-    let { data, loading, error, onChange, current, status } = this.props;
+    let {
+      data,
+      loading,
+      error,
+      onChange,
+      current,
+      status,
+      totalPages,
+      text,
+      rateVideoApi,
+    } = this.props;
     let elements = [];
 
-    //Проверка состояния загрузки
     if (loading && !error) {
       return (
         <div className="spiner">
-          <Spiner />
+          <Spin size="large" />
         </div>
       );
     }
 
-    //проходим по массиву с данными и рендерем элементы
-    elements = data.map((item) => {
-      const { id, ...itemProps } = item;
+    if (data.length > 0) {
+      elements = data.map((item) => {
+        const { id, ...itemProps } = item;
 
-      return (
-        <li key={id}>
-          <Task {...itemProps} status={status} />
-        </li>
-      );
-    });
+        return (
+          <li key={id}>
+            <Task
+              {...itemProps}
+              status={status}
+              rateVideoApi={rateVideoApi}
+              id={id}
+            />
+          </li>
+        );
+      });
+    } else if (data.length === 0 && text.length > 1) {
+      return <h1>Видео не найдено!</h1>;
+    }
 
-    //если нет данных прячем пагинацию
     if (data.length < 3) {
       return <ul className="">{elements}</ul>;
     }
@@ -44,7 +61,11 @@ export default class TaskList extends Component {
     return (
       <div className="main">
         <ul className="taskList">{elements}</ul>;
-        <FooterPagination onChange={onChange} current={current} />
+        <FooterPagination
+          onChange={onChange}
+          current={current}
+          totalPages={totalPages}
+        />
       </div>
     );
   }

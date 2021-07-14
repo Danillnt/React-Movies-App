@@ -17,9 +17,9 @@ export default class Task extends Component {
 
   handleChange = (valueRate) => {
     this.setState({ valueRate });
+    this.props.rateVideoApi(valueRate, this.props.id);
   };
 
-  //Сокращаем текст описания
   truncateText = (text) => {
     if (text !== undefined) {
       let arr = text.split(" ");
@@ -36,7 +36,6 @@ export default class Task extends Component {
     }
   };
 
-  //Сокращаем текст название видео
   truncateTextTitle = (text) => {
     if (text !== undefined) {
       let arr = text.split(" ");
@@ -53,16 +52,13 @@ export default class Task extends Component {
     }
   };
 
-  //получаем номер жанров и вытаскиваем название
   getGenre(genresList, genreMovie) {
     let arr = [];
 
     genresList.genres.forEach((i) => {
       genreMovie.forEach((element) => {
         if (i.id === element) {
-          // console.log(i.name);
           arr.push(i.name);
-          // return i.name
         }
       });
     });
@@ -70,8 +66,7 @@ export default class Task extends Component {
     return arr;
   }
 
-  //форматируем время
-  formatDate = (date) => {
+  formatDate = (date = "") => {
     if (date.length > 0) {
       return format(new Date(date), "LLLL d, y");
     } else {
@@ -79,12 +74,19 @@ export default class Task extends Component {
     }
   };
 
-  render() {
+  getUrlImg = (posterPath) => {
     const IMG_API = "https://image.tmdb.org/t/p/w1280";
+    if (posterPath != undefined) {
+      return IMG_API + posterPath;
+    }
+  };
+
+  render() {
+    // const IMG_API = "https://image.tmdb.org/t/p/w1280";
 
     let {
       original_title,
-      poster_path,
+      poster_path = " ",
       vote_average,
       overview,
       status,
@@ -98,7 +100,6 @@ export default class Task extends Component {
 
     let id = 0;
 
-    //элементы жанров
     const element = this.getGenre(genres, genre_ids).map((i, index) => {
       if (index < 3) {
         return (
@@ -109,7 +110,6 @@ export default class Task extends Component {
       }
     });
 
-    //меняем класс оцененных фильмов
     let className = "";
     if (valueRate > 0) {
       className = "movie-item__star";
@@ -117,12 +117,10 @@ export default class Task extends Component {
       className = "movie-item";
     }
 
-    //при смене состояния прячем не оцененные фильмы
     if (status === "rated" && className === "movie-item") {
       className = "hidden";
     }
 
-    //красим рейтинг
     let rate = "";
     if (vote_average >= 0 && vote_average < 3) {
       rate = "infoCard__header_team-rate-min";
@@ -138,7 +136,7 @@ export default class Task extends Component {
       <div className={className}>
         <div className="imageCard">
           <img
-            src={IMG_API + poster_path}
+            src={this.getUrlImg(poster_path)}
             alt={original_title}
             className="imageCard__img"
           ></img>
@@ -161,7 +159,7 @@ export default class Task extends Component {
           <div className="infoCard__text">{this.truncateText(overview)}</div>
           <div className="infoCard__star">
             <span>
-              <Rate onChange={this.handleChange} value={valueRate} />
+              <Rate onChange={this.handleChange} value={valueRate} count={8} />
             </span>
           </div>
         </div>

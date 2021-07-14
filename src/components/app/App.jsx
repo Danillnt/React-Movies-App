@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import SwapiService from "../../services/swapi-service";
 import Navigation from "../navigation/Navigation";
 import Search from "../search/Search";
-import ErrorIndicator from "../error-indicator/error-indicator";
+import ErrorIndicator from "../errorIndicator/error-indicator";
 import TaskList from "../taskList/TaskList";
 
 import { Context } from "../context/context";
@@ -17,37 +17,39 @@ export default class App extends Component {
 
   state = {
     data: [],
-    loading: false, //спинер
-    error: false, // окно с сообщением об ошибки
-    current: 1, //страница пагинации
-    text: "", //текст инпута
-    status: "search", //статус какая кнопка нажата в хедаре
+    loading: false,
+    error: false,
+    current: 1,
+    text: " ",
+    status: "search",
     genres: "",
+    totalPages: "",
+    token: "",
   };
 
-  //метод жизненного цикла используем для получения API жанров
   componentDidMount() {
     this.getDateGenres();
+    this.getDateToken();
   }
 
-  //Меняем состояние ошибки(если данные с сервера не получены)
   onError = () => {
     this.setState({
       error: true,
     });
   };
 
-  //записываем полученные данные в состояние (поисковые)
   upDateMovieSearch = (text, page = 1) => {
     this.setState({
-      loading: true, //показываем загрузку
+      error: false,
+      loading: true,
     });
 
     this.swapiService
       .getMovisSearch(text, page)
       .then((res) => {
         this.setState({
-          data: res,
+          data: res.data,
+          totalPages: res.total_pages,
           loading: false,
         });
       })
@@ -55,7 +57,6 @@ export default class App extends Component {
       .catch(this.onError);
   };
 
-  //получаем список жанров и закидываем его в состояние
   getDateGenres = () => {
     this.swapiService.getGenres().then((res) => {
       this.setState({
@@ -64,7 +65,14 @@ export default class App extends Component {
     });
   };
 
-  //получаем номер страницы и вызываем получение данных
+  getDateToken = () => {
+    this.swapiService.getToken().then((res) => {
+      this.setState({
+        token: res.guest_session_id,
+      });
+    });
+  };
+
   onChange = (page) => {
     this.setState({
       current: page,
@@ -73,47 +81,40 @@ export default class App extends Component {
     this.upDateMovieSearch(this.state.text, page);
   };
 
-  //записываем в состояние текст инпута и вызываем функцию с апп
   hendleOnChange = debounce((e) => {
     this.setState({
       text: e.target.value,
     });
 
-    this.upDateMovieSearch(this.state.text);
+    if (this.state.text.length > 0) {
+      this.upDateMovieSearch(this.state.text);
+    } else {
+      this.setState({
+        data: [],
+      });
+    }
   }, 1000);
 
-  //кнопка хедар поисковые
   showItemSearch = () => {
     this.setState({
       status: "search",
     });
   };
 
-  //кнопка хедар оцененные
   showItemRated = () => {
     this.setState({
       status: "rated",
     });
   };
 
+  rateVideoApi = (rate, id) => {
+    this.swapiService.postRate(rate, id, this.state.token);
+  };
+
   render() {
-    const { data, error, current, text, genres, status, loading } = this.state;
+    const { data, error, current, text, genres, status, loading, totalPages } =
+      this.state;
 
-    //сообщение "видео не найдено"
-    if (data.length === 0 && text.length > 0) {
-      return (
-        <div className="container">
-          <Navigation />
-          <Search
-            upDateMovie={this.upDateMovieSearch}
-            hendleOnChange={this.hendleOnChange}
-          />
-          <h1>Видео не найдено!</h1>
-        </div>
-      );
-    }
-
-    //Проверка состояния ошибки И вызов окна с сообщением
     if (error) {
       return (
         <div>
@@ -144,6 +145,9 @@ export default class App extends Component {
             onChange={this.onChange}
             current={current}
             status={status}
+            totalPages={totalPages}
+            text={text}
+            rateVideoApi={this.rateVideoApi}
           />
         </div>
       </Context.Provider>

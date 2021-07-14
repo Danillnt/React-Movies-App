@@ -1,9 +1,9 @@
-.error-indicator {
+.errorIndicator {
     text-align: center;
     padding-top: 10%;
 }
 
 
-.error-indicator__text_1 {
+.errorIndicator__subtitle {
     color: red;
 }
