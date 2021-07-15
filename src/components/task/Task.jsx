@@ -32,6 +32,9 @@ export default class Task extends Component {
       });
 
       let res = newArr.join(" ") + "...";
+      if (res == "...") {
+        return "There is currently no video description. We are sorry. You can find the description on the Internet. All the best to you!";
+      }
       return res;
     }
   };
