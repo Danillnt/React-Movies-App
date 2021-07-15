@@ -253,6 +253,8 @@ body {
     font-size: 12px;
     padding-left: 10px !important;
     width: 100%;
+    position: relative;
+    min-width: 387px;
     margin-top: 18px;
   } 
 }  
